@@ -1,7 +1,7 @@
 import moment from "moment";
 import { Collection } from "mongodb";
-import { IpfsClusterPinRm } from "../../common/utils";
-import { CoreService } from "./core.service";
+import { IpfsClusterPinRm } from "../../common/utils.js";
+import { CoreService } from "./core.service.js";
 
 interface Activity {
 

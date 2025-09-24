@@ -6,10 +6,10 @@ import { createSchema, createYoga } from 'graphql-yoga'
 import { GraphQLJSON, GraphQLLong } from 'graphql-scalars'
 import { buildSchema } from 'graphql'
 import { IPFSHTTPClient } from 'ipfs-http-client'
-import { CoreService } from '../modules/core/core.service'
-import {GatewayApiController} from './gateway.controller'
-import { Resolvers } from './graphql/resolvers'
-import { schema } from './graphql/schema'
+import { CoreService } from '../modules/core/core.service.js'
+import {GatewayApiController} from './gateway.controller.js'
+import { Resolvers } from './graphql/resolvers.js'
+import { schema } from './graphql/schema.js'
 
 export const ipfsContainer: { self: IPFSHTTPClient } = {} as any
 export const encoderContainer: { self: CoreService } = {} as any

@@ -4,3 +4,30 @@ logs
 dist
 encoder.db
 data
+
+# IDE and OS files
+.DS_Store
+.vscode/
+.idea/
+
+# Project specific logs and scripts
+*.log
+ecosystem.config.js
+encoding-monitor.log
+ipfs.log
+monitor-control.sh
+monitor-jobs.sh
+monitor.log
+monitor.sh
+notifications.log
+priority-encoding.log
+spk-encoder.log
+start-monitor.sh
+startup-test.log
+test-run.log
+encoder.log
+
+# Environment files
+.env
+.env.local
+.env.*.local

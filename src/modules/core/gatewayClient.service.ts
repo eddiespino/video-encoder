@@ -1,12 +1,12 @@
 import Axios from 'axios'
-import { CoreService } from './core.service'
+import { CoreService } from './core.service.js'
 import NodeSchedule from 'node-schedule'
 import PQueue from 'p-queue'
 import { TileDocument } from '@ceramicnetwork/stream-tile'
-import { EncodeStatus, JobStatus } from '../encoder.model'
+import { EncodeStatus, JobStatus } from '../encoder.model.js'
 import GitCommitInfo from 'git-commit-info'
 
-const queue_concurrency = 1
+const queue_concurrency = 2
 export class GatewayClient {
   self: CoreService
   apiUrl: string
@@ -171,9 +171,13 @@ export class GatewayClient {
     })
 
     if(data.data.queueJob.job) {
-      console.log(this.jobQueue.size === 0, this.jobQueue.pending, (queue_concurrency - 1))
-      if (this.jobQueue.size === 0 && this.jobQueue.pending === (queue_concurrency - 1)) {
+      console.log('Queue check:', this.jobQueue.size === 0, this.jobQueue.pending, 'concurrency:', queue_concurrency)
+      // Accept job if we have capacity (not at max concurrency)
+      if (this.jobQueue.pending < queue_concurrency) {
+        console.log('Accepting job:', data.data.queueJob.job.id)
         this.queueJob(data.data.queueJob.job)
+      } else {
+        console.log(`Job queue at capacity - ${this.jobQueue.pending}/${queue_concurrency} jobs running`)
       }
     }
   }
@@ -269,13 +273,16 @@ export class GatewayClient {
 
       console.log('Startup: Checking if IPFS is running')
       try {
-        await (await this.self.ipfs.id()).id
-      } catch {
+        const id = await this.self.ipfs.id()
+        console.log('IPFS connection successful, ID:', id.id)
+      } catch (ex) {
+        console.log('IPFS connection error:', ex)
         throw new Error("IPFS Daemon Not Available. Please run IPFS.")
       }
 
 
-      NodeSchedule.scheduleJob(`${Math.round(Math.random() * (60 + 1))} * * * * *`, this.getNewJobs)
+      // Poll every 15 seconds instead of every minute for higher priority
+      NodeSchedule.scheduleJob(`*/${Math.round(Math.random() * (10) + 10)} * * * * *`, this.getNewJobs)
       NodeSchedule.scheduleJob(`${Math.round(Math.random() * (60 + 1))} * * * * *`, this.ipfsBootstrap)
       NodeSchedule.scheduleJob(`0 * * * *`, this.encoderUnpinCheck); //Garbage collect every hour
       
@@ -295,8 +302,12 @@ export class GatewayClient {
             }),
           })
         } catch (ex) {
-          console.log(ex)
-          process.exit(0)
+          console.log('⚠️  WARNING: Failed to register node with gateway')
+          console.log('   Status:', ex.response?.status || 'Unknown')
+          console.log('   Message:', ex.response?.statusText || ex.message)
+          console.log('   Endpoint:', `${this.apiUrl}/api/v0/gateway/updateNode`)
+          console.log('   📝 Node will continue processing jobs without registration')
+          console.log('   🔧 Infrastructure team: Check gateway updateNode endpoint on Monday')
         }
       }, 1000)
     }

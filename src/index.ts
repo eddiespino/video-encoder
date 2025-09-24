@@ -1,9 +1,9 @@
 import {CeramicClient} from '@ceramicnetwork/http-client'
 import { onShutdown } from "node-graceful-shutdown";
-import { ConfigService } from './config.service'
+import { ConfigService } from './config.service.js'
 // import IPFSHTTP from 'ipfs-http-client'
-import { CoreService } from './modules/core/core.service'
-import {EncoderApiModule} from './api/index'
+import { CoreService } from './modules/core/core.service.js'
+import {EncoderApiModule} from './api/index.js'
 
 let instance: CoreService;
 async function startup(): Promise<void> {

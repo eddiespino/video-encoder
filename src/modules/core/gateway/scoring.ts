@@ -1,5 +1,5 @@
 import moment from 'moment'
-import { GatewayService } from '../gateway.service'
+import { GatewayService } from '../gateway.service.js'
 
 export class ScoringService {
   gateway: GatewayService

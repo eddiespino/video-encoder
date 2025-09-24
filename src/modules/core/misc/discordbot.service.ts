@@ -7,7 +7,7 @@ import {
   Partials,
   APIEmbedField
 } from 'discord.js'
-import { CoreService } from '../core.service'
+import { CoreService } from '../core.service.js'
 
 export class DiscordBot {
   client: Client<boolean>

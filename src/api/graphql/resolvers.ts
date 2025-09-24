@@ -1,7 +1,7 @@
 import moment from "moment";
-import { encoderContainer } from ".."
-import { peerList } from "../../common/utils";
-import {JobReason, JobStatus} from '../../modules/encoder.model'
+import { encoderContainer } from "../index.js"
+import { peerList } from "../../common/utils.js";
+import {JobReason, JobStatus} from '../../modules/encoder.model.js'
 
 class JobInfo {
     data: any;

@@ -6,16 +6,16 @@ import { DID } from 'dids'
 import { IDX } from '@ceramicstudio/idx'
 import  * as IPFSHTTP from 'ipfs-http-client'
 import {IPFSHTTPClient} from 'ipfs-http-client'
-import { ConfigService } from '../../config.service'
-import {Lib2pService} from '../libp2p/libp2p.service'
-import { EncoderService } from './encoder.service'
-import { GatewayService } from './gateway.service'
-import { Config } from './config.service'
+import { ConfigService } from '../../config.service.js'
+import {Lib2pService} from '../libp2p/libp2p.service.js'
+import { EncoderService } from './encoder.service.js'
+import { GatewayService } from './gateway.service.js'
+import { Config } from './config.service.js'
 import os from 'os'
 import path from 'path'
-import { IdentityService } from './identity.service'
-import { GatewayClient } from './gatewayClient.service'
-import { DiscordBot } from './misc/discordbot.service'
+import { IdentityService } from './identity.service.js'
+import { GatewayClient } from './gatewayClient.service.js'
+import { DiscordBot } from './misc/discordbot.service.js'
 
 const idxAliases = {
   rootPosts: 'ceramic://kjzl6cwe1jw147fikhkjs9qysmv6dkdsu5i6zbgk4x9p47gt9uedru1755y76dg',
@@ -49,7 +49,11 @@ export class CoreService {
       aliases: idxAliases,
     })
 
-    this.ipfs = IPFSHTTP.create({ host: ConfigService.getConfig().ipfsHost })
+    this.ipfs = IPFSHTTP.create({ 
+      host: 'localhost',
+      port: 5001,
+      protocol: 'http'
+    })
 
     this.p2pService = new Lib2pService(this)
     await this.p2pService.start()

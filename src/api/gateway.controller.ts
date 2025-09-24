@@ -4,10 +4,10 @@
  */
 import { BadRequestException, Body, HttpCode, HttpStatus, Post, Put, Query } from '@nestjs/common'
 import { Controller, Get, Param } from '@nestjs/common'
-import { EncoderService } from '../modules/core/encoder.service'
-import { JobStatus } from '../modules/encoder.model'
-import { encoderContainer } from './index'
-import { unwrapJWS } from './middleware'
+import { EncoderService } from '../modules/core/encoder.service.js'
+import { JobStatus } from '../modules/encoder.model.js'
+import { encoderContainer } from './index.js'
+import { unwrapJWS } from './middleware.js'
 
 // Need to keep a top-level container here to avoid garbage collection
 // @Controller(`${INDEXER_API_BASE_URL}/debug`)

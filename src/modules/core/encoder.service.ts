@@ -1,9 +1,10 @@
-import { CoreService } from './core.service'
+import { CoreService } from './core.service.js'
 import { v4 as uuid } from 'uuid'
 import { TileDocument } from '@ceramicnetwork/stream-tile'
 import { StreamID } from '@ceramicnetwork/streamid'
 import tmp from 'tmp'
 import ffmpeg from 'fluent-ffmpeg'
+import ffmpegInstaller from '@ffmpeg-installer/ffmpeg'
 import { globSource } from 'ipfs-http-client'
 import Path from 'path'
 import fs from 'fs/promises'
@@ -11,11 +12,20 @@ import EventEmitter from 'events'
 import PouchDB from 'pouchdb'
 import PouchdbFind from 'pouchdb-find'
 import PouchdbUpsert from 'pouchdb-upsert'
-import { EncodeStatus } from '../encoder.model'
+import { EncodeStatus } from '../encoder.model.js'
 import URL from 'url'
 import Downloader from 'nodejs-file-downloader'
 import execa from 'execa'
 import moment from 'moment'
+
+// Configure fluent-ffmpeg to use bundled FFmpeg for better compatibility
+ffmpeg.setFfmpegPath(ffmpegInstaller.path)
+// Note: bundled installer doesn't include ffprobe, fallback to system if available
+try {
+  ffmpeg.setFfprobePath('/opt/homebrew/bin/ffprobe')
+} catch (err) {
+  console.warn('ffprobe not found at system path, using bundled ffmpeg for probing')
+}
 PouchDB.plugin(PouchdbFind)
 PouchDB.plugin(PouchdbUpsert)
 

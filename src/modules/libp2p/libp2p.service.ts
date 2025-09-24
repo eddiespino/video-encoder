@@ -8,9 +8,9 @@ import Bootstrap from 'libp2p-bootstrap'
 import DHT from 'libp2p-kad-dht'
 import PeerId from 'peer-id'
 
-import { CoreService } from '../core/core.service'
-import { decode, encode } from './frame-codec.util'
-import { MESSAGE_TYPES } from './messages.model'
+import { CoreService } from '../core/core.service.js'
+import { decode, encode } from './frame-codec.util.js'
+import { MESSAGE_TYPES } from './messages.model.js'
 import pipe from 'it-pipe'
 import Pushable from 'it-pushable'
 
